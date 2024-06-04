@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WS</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>請輸入標題代號</h1>
+    <p>文庫專用代號:電擊文庫「DGB」，Key「Key」，富士見ファンタジア文庫「FFB」，角川スニーカー文庫「KSB」<br>輸入代號請注意大小寫</p>
+    <form id="myForm">
+      <input type="text" id="inputString" name="input" placeholder="在此輸入標題代號">
+      <button type="button" onclick="submitForm()">提交</button>
+    </form>
+    <p id="result"></p>
+    <script>
+      
+      function submitForm() {
+        document.getElementById("result").textContent = "載入中...";
+        var seriesArray = ["MRd","MRp","BAV","MDE","RSK","OSK", "SFN", "HOL", "Key", "DGB", "FFB", "KSB", "AYT", "YHN", "CSM", "PAD", "BD", "AGS", "BTR", "JJ", "DC", "DC3", "DC4",
+        "DS","DC5","PJS", "SBY", "Gby", "SS", "Gs", "KF", "SPY", "UMA", "LRC", "DJ", "LL", "SIL", "Dds", "Dpx", "Dmv", "Dsw", 
+        "ARI", "MAR", "SW", "HBR", "Khb", "TSK", "AZL", "AB", "Kab",  "SAO", "Gso", "OVL", "PXR", "RSL", "5HY", "PRD", "DAL",
+        "Fdl", "KGL", "IMS", "IAS", "SHS", "LNJ", "SIN", "TRV", "DCT", "KMD", "GU", "ALL", "LSP", "SIP", "DDM", "ZLS", "FGO",
+        "LB", "Klb", "WTR", "GRI", "P3", "P4", "PQ", "P5", "MTI", "SG", "DBG", "Kdb", "ISC", "PI", "KNK", "FS", "FU", "FH", "FZ",
+        "BFR", "SMP", "Ksm", "MM", "MR", "RZ", "LOD", "SKR", "KS", "Sks", "CCS", "LSS", "SIS", "KC", "NS", "N1", "NV", "NA", "N2",
+        "NR", "ND", "GBS", "MK", "MK2", "YYS", "GGO", "Ggg", "GZL", "STG", "FXX", "NGL", "APO", "HLL", "GL", "PD", "AOT", "KMN",
+        "VS", "CC", "RW", "Krw", "KLK", "ID", "RG", "Gid", "SY", "Ssy", "KI", "AW", "Kaw", "KR", "OMS", "IM", "IMC", "CL", "Kcl",
+        "LH", "CGS", "TL", "SGS", "PY", "BM", "NM", "MG", "DD", "CHA", "Kch", "NK", "SE", "SF", "SR", "GF", "TF", "GST", "CS",
+        "Woo", "GT", "DS2", "DG", "GG", "VR", "PP", "RN", "ZM", "GC", "NJ", "FT", "MF", "KG", "BR", "EV", "MB", "KK", "SB", "PT",
+        "CN", "SK", "MH", "LS", "VA",];
+        var inputString = document.getElementById("inputString").value;
+        if (seriesArray.includes(inputString)) {
+          var formData = new FormData();
+        formData.append("input", inputString);
+        formData.append("method", "Sent_Series");
+
+        fetch("https://script.google.com/macros/s/AKfycbwMFqGvRIw4fr5HeCQhGXlt5lcOnyga6cyCTp4z217D15uBy0s9GEwokY5sA2wQZh8NBQ/exec", {
+          method: "POST",
+          body: formData
+        })
+          .then(response => response.text())
+          .then(data => {
+
+            var dataArray = data.split("&");
+var describe = document.getElementById("inputString").value + "：";
+
+
+if(dataArray[0] == "0")describe+="無洗能" + "；";
+else if(dataArray[0] == "1")describe+="有洗能" + "(" + dataArray[1] + ")；";
+
+if(dataArray[2] == "0")describe+="無逆壓縮" + "；";
+else if(dataArray[2] == "1")describe+="有逆壓縮" + "(" + dataArray[3] + ")；";
+
+if(dataArray[4] == "0")describe+="無橫置刀" + "；";
+else if(dataArray[4] == "1")describe+="有橫置刀" + "(" + dataArray[5] + ")；";
+
+if(dataArray[6] == "0")describe+="無洗牌刀" + "；";
+else if(dataArray[6] == "1")describe+="有洗牌刀" + "(" + dataArray[7] + ")；";
+
+if(dataArray[8] == "0")describe+="無免傷刀 ";
+else if(dataArray[8] == "1")describe+="有免傷刀 " + "(" + dataArray[9] + ")";
+
+describe+=dataArray[10];
+
+            document.getElementById("result").textContent = describe;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+        }
+else{
+  document.getElementById("result").textContent = "查無資料";
+}
+      }
+    </script>
+  </body>
+</html>
